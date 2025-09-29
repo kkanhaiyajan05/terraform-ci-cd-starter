@@ -1,0 +1,43 @@
+name: Terraform AWS S3 Deployment
+
+on:
+  workflow_dispatch: # Manually trigger
+
+jobs:
+  terraform:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0 # Specify the Terraform version you want to use
+
+      # Step 3: Initialize Terraform
+      - name: Terraform Init
+        working-directory: terraform-s3
+        run: terraform init
+
+      # Step 4: Validate Terraform Configuration
+      - name: Terraform Validate
+        working-directory: terraform-s3
+        run: terraform validate
+
+      # Step 5: Plan Terraform Changes
+      - name: Terraform Plan
+        working-directory: terraform-s3
+        run: terraform plan
+
+      # Step 6: Apply Terraform Changes
+      - name: Terraform Apply
+        working-directory: terraform-s3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: terraform apply -auto-approve
