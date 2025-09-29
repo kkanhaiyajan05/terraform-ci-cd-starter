@@ -1,14 +1,14 @@
 provider "aws" {
-    region      = "us-east-1"
+    region      = var.region
 }
 
 resource "aws_s3_bucket" "krishna_bucket" {
-    bucket              = "krisjan05-terraform-bucket"
+    bucket              = var.bucket_name
     acl                 = "private"
 
     tags = {
         Name        = "MyS3Bucket"
-        Environment = "Practice"
+        Environment = var.environment_name
     }    
 }
 
