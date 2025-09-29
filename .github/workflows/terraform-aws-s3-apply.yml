@@ -2,6 +2,11 @@ name: Terraform AWS S3 Deployment
 
 on:
   workflow_dispatch: # Manually trigger
+    inputs:
+      bucket_name:
+        description: "Name of the S3 bucket to create. It should adhere to AWS S3 bucket naming rules."
+        required: true
+        type: string
 
 jobs:
   terraform:
